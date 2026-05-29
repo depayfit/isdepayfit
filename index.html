@@ -104,7 +104,9 @@
   </div>
 
   <script>
-    window.onload = () => {
+    <script>
+
+window.onload = () => {
   const saved = localStorage.getItem("depayFit");
 
   if (saved === "false") {
@@ -113,6 +115,25 @@
     setFit(true);
   }
 };
+
+function setFit(isFit) {
+  const status = document.getElementById("status");
+  const sound = document.getElementById("sound");
+
+  localStorage.setItem("depayFit", isFit);
+
+  if (isFit) {
+    status.innerText = "🟢 JA";
+    status.style.color = "lime";
+    sound.innerText = "YEEEEJ 🇳🇱 NAAR LINKS 👈";
+  } else {
+    status.innerText = "🔴 NEE";
+    status.style.color = "red";
+    sound.innerText = "AHHH 😭 SINAASAPPELSAPMODUS 🧃";
+  }
+}
+
+</script>
   </script>
 
 </body>
