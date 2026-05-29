@@ -104,20 +104,15 @@
   </div>
 
   <script>
-    function setFit(isFit) {
-      const status = document.getElementById("status");
-      const sound = document.getElementById("sound");
+    window.onload = () => {
+  const saved = localStorage.getItem("depayFit");
 
-      if (isFit) {
-        status.innerText = "🟢 JA";
-        status.style.color = "lime";
-        sound.innerText = "YEEEEJ 🇳🇱";
-      } else {
-        status.innerText = "🔴 NEE";
-        status.style.color = "red";
-        sound.innerText = "AHHH 😭";
-      }
-    }
+  if (saved === "false") {
+    setFit(false);
+  } else {
+    setFit(true);
+  }
+};
   </script>
 
 </body>
