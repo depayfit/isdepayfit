@@ -150,13 +150,13 @@
 <script>
 
 window.onload = () => {
-  const saved = localStorage.getItem("depayFit");
+  const status = document.getElementById("status");
+  const sound = document.getElementById("sound");
 
-  if (saved === "false") {
-    setFit(false);
-  } else {
-    setFit(true);
-  }
+  status.innerText = "❓";
+  status.style.color = "orange";
+
+  sound.innerText = "Tik om te onthullen";
 };
 
 function setFit(isFit) {
