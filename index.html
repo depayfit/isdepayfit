@@ -146,17 +146,49 @@
 <audio id="feesttent-audio">
   <source src="Feesttent.mp3" type="audio/mpeg">
 </audio>
+<audio id="feesttent-audio">
+  <source src="Feesttent.mp3" type="audio/mpeg">
+</audio>
 
-  function startFeesttent() {
-  const audio = document.getElementById("feesttent-audio");
-
-  audio.currentTime = 0;
-  audio.play();
-}
-  
 <script>
 
-  <script>
+    window.onload = () => {
+      const saved = localStorage.getItem("depayFit");
+
+      if (saved === "false") {
+        setFit(false);
+      } else {
+        setFit(true);
+      }
+    };
+
+    function setFit(isFit) {
+      const status = document.getElementById("status");
+      const sound = document.getElementById("sound");
+
+      localStorage.setItem("depayFit", isFit);
+
+      if (isFit) {
+        status.innerText = "🟢 JA";
+        status.style.color = "lime";
+
+        sound.innerText = "YEEEEJ 🇳🇱 NAAR LINKS 👈";
+      } else {
+        status.innerText = "🔴 NEE";
+        status.style.color = "red";
+
+        sound.innerText = "AHHH 😭 SINAASAPPELSAPMODUS 🧃";
+      }
+    }
+
+    function startFeesttent() {
+      const audio = document.getElementById("feesttent-audio");
+
+      audio.currentTime = 0;
+      audio.play();
+    }
+
+</script>
 
     window.onload = () => {
       const saved = localStorage.getItem("depayFit");
