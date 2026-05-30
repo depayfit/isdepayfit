@@ -182,7 +182,16 @@ function startFeesttent() {
   audio.currentTime = 0;
   audio.play();
 }
+function revealStatus() {
+  const saved = localStorage.getItem("depayFit");
 
+  if (saved === "false") {
+    setFit(false);
+  } else {
+    setFit(true);
+    startFeesttent();
+  }
+}
 </script>
 
 </body>
