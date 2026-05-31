@@ -237,6 +237,24 @@ function startFeesttent() {
   document.getElementById("shareBtn").style.display = "inline-block";
   document.getElementById("funStats").style.display = "block";
 
+    const koemanQuotes = [
+  "onbekend 🤷‍♂️",
+  "onderzoek loopt nog 🔍",
+  "geen commentaar 🚫",
+  "kan niet worden bevestigd 🎙️",
+  "bron weigert medewerking 😤",
+  "waarschijnlijk niet 😅",
+  "volgens insiders: nee 👀",
+  "nog niet uitgelekt 🕵️",
+  "niet in de selectie 📋",
+  "vertrouwt op zijn eigen bronnen 🇳🇱"
+];
+
+const randomKoeman =
+  koemanQuotes[Math.floor(Math.random() * koemanQuotes.length)];
+
+document.getElementById("koemanText").innerText = randomKoeman;  
+
       const bronnen = [
   "collectieve Oranje-paniek 😅",
   "nationaal onderbuikgevoel 🇳🇱",
