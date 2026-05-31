@@ -152,7 +152,11 @@
     🇳🇱 FEESTTENTMODUS
   </button>
     </div>
-
+    
+<button onclick="shareStatus()" class="share-button">
+  📲 Deel deze status
+</button>
+   
   <div class="footer">
   🇳🇱 De enige echte originele Memphis Depay Tracker 🇳🇱
 </div>
@@ -215,10 +219,6 @@ function startFeesttent() {
   audio.play();
   }
 
-function revealStatus() {
-  setFit(false);
-}
-
   function revealStatus() {
   setFit(false);
 }
@@ -230,8 +230,6 @@ function shareStatus() {
 
   window.open(`https://wa.me/?text=${text}`, "_blank");
 }
-
-</script>
 
 </script>
     
