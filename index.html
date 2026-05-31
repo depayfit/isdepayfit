@@ -236,6 +236,24 @@ function startFeesttent() {
 
   document.getElementById("shareBtn").style.display = "inline-block";
   document.getElementById("funStats").style.display = "block";
+
+      const bronnen = [
+  "collectieve Oranje-paniek 😅",
+  "nationaal onderbuikgevoel 🇳🇱",
+  "vertrouw me bro 😎",
+  "Fabrizio's achterneef 🤫",
+  "geavanceerde sinaasappelsapanalyse 🧃",
+  "iemand in een WhatsApp-groep 📱",
+  "een gast op Facebook met hoofdletters 🚨",
+  "de Memphis-meter 3000™ 🤖",
+  "iemand die zei 'komt goed' 🤞",
+  "bronnen dichtbij de barbecue 🍖"
+];
+
+const randomBron =
+  bronnen[Math.floor(Math.random() * bronnen.length)];
+
+document.getElementById("bronText").innerText = randomBron;
 }
 
 function shareStatus() {
