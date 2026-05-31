@@ -216,6 +216,12 @@ function startFeesttent() {
   }
 
 function shareStatus() {
+if (window.goatcounter) {
+  window.goatcounter.count({
+    path: "share-whatsapp",
+    title: "WhatsApp share button"
+  });
+}
   const text = encodeURIComponent(
     "🚨🚨 ORANJE PANIEKMODUS 🚨🚨\n😭😭 MEMPHIS NOG NIET FIT 😭😭\n🧃 ORANJE IN VLOEIBARE VORM 🧃\n\nCheck: https://isdepay.fit"
   );
