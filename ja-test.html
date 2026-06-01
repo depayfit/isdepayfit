@@ -1,1 +1,307 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Is Memphis Depay Fit?</title>
 
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 20px;
+      color: orange;
+    }
+
+    .card {
+      background: #111;
+      border: 5px solid orange;
+      border-radius: 20px;
+      overflow: hidden;
+      width: 90%;
+      max-width: 520px;
+      box-shadow: 0 0 30px rgba(255,165,0,0.3);
+    }
+
+    img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .status {
+  font-size: 140px;
+  font-weight: bold;
+  margin-top: 20px;
+  animation: pulse 1.5s infinite;
+}
+
+.sound {
+  font-size: 24px;
+  color: orange;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+    .info {
+      margin-top: 20px;
+      opacity: 0.8;
+      line-height: 1.6;
+      padding-bottom: 10px;
+    }
+
+    .buttons {
+      margin: 25px 0;
+    }
+
+    .yes {
+      background: green;
+      color: white;
+    }
+
+    .no {
+      background: red;
+      color: white;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .share-button {
+  background: #222;
+  color: orange;
+  border: 2px solid orange;
+  font-size: 16px;
+  padding: 10px 18px;
+  border-radius: 14px;
+  margin-top: 12px;
+    }
+
+.fun-stats {
+  margin-top: 12px;
+  font-size: 14px;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+    .fun-stats p {
+  margin: 10px 0;
+    }
+    
+   .footer {
+  margin-top: 8px;
+  font-size: 12px;
+  opacity: 0.7;
+  padding: 5px;
+    }
+    
+    @keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>IS MEMPHIS DEPAY FIT?</h1>
+
+  <div class="card">
+
+    <img src="memphisoren.jpeg" />
+
+    <div class="status" id="status" onclick="revealStatus()" style="cursor:pointer;">
+  ❓
+    </div>
+
+    <div class="sound" id="sound">
+  Tik om te onthullen
+    </div>
+
+    <div class="info">
+      Laatst bijgewerkt: 1 Juni 2026 - 20:24<br>
+      Fit streak: 0 dagen<br>
+      Bron: <span id="bronText">collectieve Oranje-paniek & nationaal onderbuikgevoel 😅</span>
+    </div>
+
+    <div class="buttons" style="display:none;">
+  <button class="yes" onclick="setFit(true)">
+    JA
+  </button>
+
+  <button class="no" onclick="setFit(false)">
+    NEE
+  </button>
+
+  <button onclick="startFeesttent()">
+    🇳🇱 FEESTTENTMODUS
+  </button>
+    </div>
+
+    <button id="shareBtn" onclick="shareStatus()" class="share-button" style="display:none;">
+  😭 Deel het slechte nieuws
+    </button>
+
+<div id="funStats" class="fun-stats" style="display:none;">
+  <p>Aantal mensen dat vandaag hebben gecontroleerd:<br>
+  877</p>
+
+  <p>Aantal keer dat Memphis daardoor fitter werd:<br>
+  0</p>
+
+  <p>Aantal keer dat Koeman deze site heeft geraadpleegd:<br>
+<span id="koemanText">onbekend 🤷‍♂️</span>
+</div>
+    
+  <div class="footer">
+  🇳🇱 De enige echte originele Memphis Depay Tracker 🇳🇱
+</div>
+
+<audio id="feesttent-audio">
+  <source src="feesttent.mp3" type="audio/mpeg">
+</audio>
+
+    <audio id="panic-audio">
+  <source src="ahhh.mp3" type="audio/mpeg">
+    </audio>
+  
+<script>
+
+window.onload = () => {
+  const status = document.getElementById("status");
+  const sound = document.getElementById("sound");
+
+  status.innerText = "❓";
+  status.style.color = "orange";
+
+  sound.innerText = "Tik om te onthullen";
+};
+
+function setFit(isFit) {
+  const status = document.getElementById("status");
+  const sound = document.getElementById("sound");
+
+  localStorage.setItem("depayFit", isFit);
+
+  if (isFit) {
+    status.innerText = "🟢 JA";
+    status.style.color = "lime";
+    sound.innerHTML = `
+🇳🇱🇳🇱🇳🇱 YEEEEJ 🇳🇱🇳🇱🇳🇱<br>
+👈👈 NAAR LINKS 👈👈<br>
+👉👉 NAAR RECHTS 👉👉
+`;
+  } else {
+    status.innerText = "🔴 NEE";
+    status.style.color = "red";
+    status.style.textShadow =
+  "0 0 5px red, 0 0 10px red, 0 0 20px darkred";
+    sound.innerHTML = `
+🚨🚨 ORANJE PANIEKMODUS 🚨🚨<br>
+😭😭 MEMPHIS NOG NIET FIT 😭😭<br>
+🧃 ORANJE IN VLOEIBARE VORM 🧃
+`;
+    startPanic();
+  }
+}
+function startFeesttent() {
+  const audio = document.getElementById("feesttent-audio");
+
+  audio.currentTime = 0;
+  audio.play();
+}
+  function startPanic() {
+  const audio = document.getElementById("panic-audio");
+
+  audio.currentTime = 0;
+  audio.play();
+  }
+
+    function revealStatus() {
+  setFit(false);
+
+  document.getElementById("shareBtn").style.display = "inline-block";
+  document.getElementById("funStats").style.display = "block";
+
+    const koemanQuotes = [
+  "onbekend 🤷‍♂️",
+  "onderzoek loopt nog 🔍",
+  "geen commentaar 🚫",
+  "kan niet worden bevestigd 🎙️",
+  "bron weigert medewerking 😤",
+  "waarschijnlijk niet 😅",
+  "volgens insiders: nee 👀",
+  "nog niet uitgelekt 🕵️",
+  "niet in de selectie 📋",
+  "vertrouwt op zijn eigen bronnen 🇳🇱"
+];
+
+const randomKoeman =
+  koemanQuotes[Math.floor(Math.random() * koemanQuotes.length)];
+
+document.getElementById("koemanText").innerText = randomKoeman;  
+
+      const bronnen = [
+  "collectieve Oranje-paniek 😅",
+  "nationaal onderbuikgevoel 🇳🇱",
+  "vertrouw me bro 😎",
+  "Fabrizio's achterneef 🤫",
+  "geavanceerde sinaasappelsapanalyse 🧃",
+  "iemand in een WhatsApp-groep 📱",
+  "een gast op Facebook met hoofdletters 🚨",
+  "de Memphis-meter 3000™ 🤖",
+  "iemand die zei 'komt goed' 🤞",
+  "bronnen dichtbij de barbecue 🍖",
+  "een neef van een KNVB-vrijwilliger 👀",
+  "de achterbank van de spelersbus 🚌",
+  "iemand die het zeker wist 😎",
+  "dezelfde bron als transfergeruchten 📰",
+  "een screenshot zonder context 📸",
+  "de teamapp van Oranje (waarschijnlijk) 📱",
+  "een man in een trainingspak 🏃",
+  "de comments onder een VI-post 😂"
+];
+
+const randomBron =
+  bronnen[Math.floor(Math.random() * bronnen.length)];
+
+document.getElementById("bronText").innerText = randomBron;
+}
+
+function shareStatus() {
+if (window.goatcounter) {
+  window.goatcounter.count({
+    path: "share-whatsapp",
+    title: "WhatsApp share button"
+  });
+}
+  const text = encodeURIComponent(
+    "🚨🚨 ORANJE PANIEKMODUS 🚨🚨\n😭😭 MEMPHIS NOG NIET FIT 😭😭\n🧃 ORANJE IN VLOEIBARE VORM 🧃\n\nCheck: https://isdepay.fit"
+  );
+
+  window.open(`https://wa.me/?text=${text}`, "_blank");
+}
+
+</script>
+    
+<script data-goatcounter="https://isdepayfit.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
