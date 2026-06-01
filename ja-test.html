@@ -202,6 +202,7 @@ function setFit(isFit) {
   if (isFit) {
     status.innerText = "🟢 JA";
     status.style.color = "lime";
+    status.style.textShadow = "none";
 
     document.getElementById("shareBtn").innerText =
   "🎉 Verspreid de euforie";
@@ -323,8 +324,9 @@ if (window.goatcounter) {
     title: "WhatsApp share button"
   });
 }
-  const text = encodeURIComponent(
-    "🚨🚨 ORANJE PANIEKMODUS 🚨🚨\n😭😭 MEMPHIS NOG NIET FIT 😭😭\n🧃 ORANJE IN VLOEIBARE VORM 🧃\n\nCheck: https://isdepay.fit"
+const text = encodeURIComponent(
+  "🎉🎉 ORANJE FEESTMODUS 🎉🎉\n🇳🇱🇳🇱 MEMPHIS IS FIT 🇳🇱🇳🇱\n🍻 DE TAP MAG OPEN 🍻\n\nCheck: https://isdepay.fit"
+);
   );
 
   window.open(`https://wa.me/?text=${text}`, "_blank");
