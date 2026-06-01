@@ -203,12 +203,30 @@ function setFit(isFit) {
     status.innerText = "🟢 JA";
     status.style.color = "lime";
 
-    confetti({
-  particleCount: 350,
-  spread: 170,
-  origin: { y: 0.6 },
-  colors: ['#ff6600', '#ffffff', '#ff9900']
-});
+    const duration = 5000;
+const end = Date.now() + duration;
+
+(function frame() {
+  confetti({
+    particleCount: 4,
+    angle: 60,
+    spread: 70,
+    origin: { x: 0 },
+    colors: ['#ff6600', '#ffffff']
+  });
+
+  confetti({
+    particleCount: 4,
+    angle: 120,
+    spread: 70,
+    origin: { x: 1 },
+    colors: ['#ff6600', '#ffffff']
+  });
+
+  if (Date.now() < end) {
+    requestAnimationFrame(frame);
+  }
+})();
     
     sound.innerHTML = `
 🇳🇱 ORANJE FEESTMODUS 🇳🇱<br>
