@@ -233,10 +233,27 @@ function setFit(isFit) {
     status.style.color = "red";
     status.style.textShadow =
   "0 0 5px red, 0 0 10px red, 0 0 20px darkred";
+ 
+    const paniekRegels = [
+  "🧃 SAP-ALARM 🧃",
+  "🍺 TAP BLIJFT DICHT 🍺",
+  "📞 KOEMAN NEEMT NIET OP 📞",
+  "🤖 METER 3000 STORING 🤖",
+  "📱 TEAMAPP BLIJFT STIL 📱",
+  "🚑 HAMSTRING ALERT 🚑",
+  "🍊 ORANJE CRISISOVERLEG 🍊",
+  "📉 HOOP DAALT 📉",
+  "⚠️ GEEN GROEN LICHT ⚠️",
+  "🎲 NIEMAND WEET IETS 🎲"
+];
+
+const randomPaniek =
+  paniekRegels[Math.floor(Math.random() * paniekRegels.length)];
+    
     sound.innerHTML = `
 🚨 ORANJE PANIEKMODUS 🚨<br>
 😭 MEMPHIS NOG NIET FIT 😭<br>
-🧃SINAASAPPELSAP-ALARM🧃<br>
+${randomPaniek}
 `;
     startPanic();
   }
