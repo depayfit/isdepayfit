@@ -324,15 +324,18 @@ const end = Date.now() + duration;
     requestAnimationFrame(frame);
   }
 })();
-    
-    sound.innerHTML = `
+  sound.innerHTML = `
+<span style="color:orange;">
 🇳🇱 ORANJE FEESTMODUS 🇳🇱<br>
-🎉🎉 MEMPHIS IS FIT 🎉🎉<br>
+🎉🎉 MEMPHIS IS FIT 🎉🎉
+</span><br>
+
 <div class="dance-wrap">
   <div class="dance-left">👈👈 NAAR LINKS 👈👈</div>
   <div class="dance-right">👉👉 NAAR RECHTS 👉👉</div>
 </div>
-</div>
+`;  
+  
 `;
   } else {
     status.innerText = "🔴 NEE";
