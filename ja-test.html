@@ -183,11 +183,12 @@
   Tik om te onthullen
     </div>
 
-    <div class="info">
-      Laatst bijgewerkt: 1 Juni 2026 - 20:24<br>
-      Fit streak: 0 dagen<br>
-      Bron: <span id="bronText">collectieve Oranje-paniek & nationaal onderbuikgevoel 😅</span>
-    </div>
+  <div class="info">
+  Laatst bijgewerkt: 1 Juni 2026 - 20:24<br>
+  Fit streak: 0 dagen<br>
+  Bron: <span id="bronText">collectieve Oranje-paniek & nationaal onderbuikgevoel 😅</span><br>
+  Feestmelding: <span id="feestText">stand-by 🍻</span>
+</div>
 
     <div class="buttons" style="display:none;">
   <button class="yes" onclick="setFit(true)">
@@ -372,6 +373,23 @@ const randomBron =
 
 document.getElementById("bronText").innerText = randomBron;
 }
+  const feestmeldingen = [
+  "🍻 Eerste biertjes geopend",
+  "🎺 Toeterende auto's gesignaleerd",
+  "🕺 Polonaise officieel gestart",
+  "🇳🇱 Nationale feestcommissie bijeen",
+  "🎉 Eerste vuurwerkmelding ontvangen",
+  "📞 Koeman neemt weer op",
+  "🥳 Genee oogt opgelucht",
+  "🍖 De barbecue is aangestoken",
+  "🚜 Trekker met vlag gespot",
+  "🧃 Sinaasappelsap raakt uitverkocht"
+];
+
+const randomFeest =
+  feestmeldingen[Math.floor(Math.random() * feestmeldingen.length)];
+
+document.getElementById("feestText").innerText = randomFeest;
 
 function shareStatus() {
 if (window.goatcounter) {
