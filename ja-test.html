@@ -48,6 +48,14 @@
   font-weight: bold;
   margin-top: 20px;
   animation: pulse 1.5s infinite;
+
+      .status.fit-ja {
+  color: lime;
+  text-shadow:
+    0 0 8px lime,
+    0 0 18px lime,
+    0 0 30px lime;
+      }
 }
 
 .sound {
@@ -253,8 +261,7 @@ function setFit(isFit) {
 
   if (isFit) {
     status.innerText = "🟢 JA";
-    status.style.color = "lime";
-    status.style.textShadow = "none";
+status.classList.add("fit-ja");
 
     startFeesttent();
 
