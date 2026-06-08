@@ -258,8 +258,19 @@ function setFit(isFit) {
 
     startFeesttent();
 
-    document.getElementById("shareBtn").innerText =
-  "🎉 Verspreid de euforie";
+  const deelTeksten = [
+  "🎉 Verspreid de euforie",
+  "🍻 Waarschuw de buurt",
+  "🇳🇱 Informeer Oranje",
+  "🕺 Start de polonaise",
+  "📣 Deel het grote nieuws",
+  "🎺 Toeter het rond",
+  "🍖 Licht de barbecue in",
+  "🥳 Het volk moet dit weten"
+];
+
+document.getElementById("shareBtn").innerText =
+  deelTeksten[Math.floor(Math.random() * deelTeksten.length)];
  
     const duration = 3000;
 const end = Date.now() + duration;
