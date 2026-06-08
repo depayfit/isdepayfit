@@ -42,21 +42,22 @@
       object-fit: cover;
       display: block;
     }
-
-    .status {
+.status {
   font-size: 140px;
   font-weight: bold;
   margin-top: 20px;
   animation: pulse 1.5s infinite;
+}
 
-      .status.fit-ja {
+.status.fit-ja {
   color: lime;
   text-shadow:
     0 0 8px lime,
     0 0 18px lime,
     0 0 30px lime;
-      }
 }
+    
+
 
 .sound {
   font-size: 24px;
@@ -159,16 +160,14 @@
     opacity: 0;
   }
 }
-
-@keyframes showRight {
+    @keyframes showRight {
   0%, 49% {
     opacity: 0;
   }
   50%, 100% {
     opacity: 1;
     transform: translateX(25px);
-  }
-}
+
     }
 }
     
