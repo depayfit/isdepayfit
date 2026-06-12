@@ -179,6 +179,10 @@ width: 85%;
   🚨 VERSPREID DE PANIEK
     </button>
 
+    <a href="historie.html" class="share-button" onclick="trackHistorie()">
+  📜 Bekijk het dossier
+</a>
+
 <div id="funStats" class="fun-stats" style="display:none;">
   <p>Aantal mensen dat vandaag heeft gecontroleerd:<br>
   6577</p>
@@ -363,6 +367,16 @@ if (window.goatcounter) {
     path: "share-whatsapp",
     title: "WhatsApp share button"
   });
+
+  function trackHistorie() {
+  if (window.goatcounter) {
+    window.goatcounter.count({
+      path: "click-historie",
+      title: "Historie button"
+    });
+  }
+  }
+  
 }
   const text = encodeURIComponent(
     "🚨🚨 ORANJE PANIEKMODUS 🚨🚨\n😭😭 MEMPHIS NOG NIET FIT 😭😭\n🧃 ORANJE IN VLOEIBARE VORM 🧃\n\nCheck: https://isdepay.fit"
