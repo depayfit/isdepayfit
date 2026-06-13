@@ -161,7 +161,7 @@ padding: 10px 24px;
     </div>
 
     <div class="info">
-      Laatst bijgewerkt: 12 Juni 2026 - 21:40<br>
+      Laatst bijgewerkt: 13 Juni 2026 - 04:01<br>
       Fit streak: Precies 0 dagen 😬<br>
       Bron: <span id="bronText">collectieve Oranje-paniek & nationaal onderbuikgevoel 😅</span>
     </div>
@@ -367,25 +367,25 @@ const randomBron =
 document.getElementById("bronText").innerText = randomBron;
 }
 
-function shareStatus() {
-if (window.goatcounter) {
-  window.goatcounter.count({
-    path: "share-whatsapp",
-    title: "WhatsApp share button"
-  });
-
-  function trackHistorie() {
+function trackHistorie() {
   if (window.goatcounter) {
     window.goatcounter.count({
       path: "click-historie",
       title: "Historie button"
     });
   }
-  }
-  
 }
+
+function shareStatus() {
+  if (window.goatcounter) {
+    window.goatcounter.count({
+      path: "share-whatsapp",
+      title: "WhatsApp share button"
+    });
+  }
+
   const text = encodeURIComponent(
-    "🚨🚨 ORANJE PANIEKMODUS 🚨🚨\n😭😭 MEMPHIS NOG NIET FIT 😭😭\n🧃 ORANJE IN VLOEIBARE VORM 🧃\n\nCheck: https://isdepay.fit"
+    "🚨🚨 ORANJE PANIEKMODUS 🚨🚨\n😭😭 MEMPHIS NOG NIET FIT 😭😭\n\nCheck: https://isdepay.fit"
   );
 
   window.open(`https://wa.me/?text=${text}`, "_blank");
