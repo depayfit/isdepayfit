@@ -30,32 +30,32 @@
       box-shadow: 0 0 30px rgba(255,165,0,0.3);
     }
 
-.dossier-intro{
-  margin-bottom:35px;
-  padding-bottom:25px;
-  border-bottom:1px solid rgba(255,165,0,0.35);
-}
+    .dossier-intro {
+      margin-bottom: 35px;
+      padding-bottom: 25px;
+      border-bottom: 1px solid rgba(255,165,0,0.35);
+    }
 
-.dossier-title{
-  color:orange;
-  font-size:28px;
-  font-weight:bold;
-  margin-bottom:12px;
-}
+    .dossier-title {
+      color: orange;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
 
-.dossier-status{
-  color:white;
-  font-size:20px;
-  font-weight:bold;
-  margin-bottom:15px;
-}
+    .dossier-status {
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
 
-.dossier-intro p{
-  font-size:18px;
-  opacity:0.9;
-  line-height:1.5;
-}
-    
+    .dossier-intro p {
+      font-size: 18px;
+      opacity: 0.9;
+      line-height: 1.5;
+    }
+
     .event {
       border-bottom: 1px solid rgba(255,165,0,0.35);
       padding: 14px 0;
@@ -66,58 +66,37 @@
       margin-bottom: 8px;
     }
 
+    .milestone {
+      margin: 15px 0;
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .gold-number {
+      font-size: 34px;
+      font-weight: 900;
+      color: #ffd700;
+      text-shadow:
+        1px 1px 0 #8a6500,
+        2px 2px 0 #8a6500,
+        0 0 12px rgba(255,215,0,0.7),
+        0 0 24px rgba(255,215,0,0.5);
+    }
+
+    .milestone-text {
+      font-size: 15px;
+      color: white;
+      line-height: 1;
+    }
+
     a {
       color: orange;
       font-weight: bold;
       text-decoration: none;
     }
-.gold {
-    color: #FFD700;
-    font-size: 2em;
-    font-weight: 900;
-    text-shadow:
-  1px 1px 0 #8a6500,
-  2px 2px 0 #8a6500,
-  0 0 12px rgba(255,215,0,0.7),
-  0 0 24px rgba(255,215,0,0.5);
-
-    position: relative;
-}
-
-.gold::before {
-    content: '';
-    position: absolute;
-    top: -6px;
-    left: -4px;
-    width: 14px;
-    height: 14px;
-    background: radial-gradient(
-        circle,
-        #fffbe0 0%,
-        rgba(255,255,255,0) 70%
-    );
-    pointer-events: none;
-}
-    .milestone {
-  margin: 15px 0;
-}
-.gold-number {
-  font-size: 36px;
-  font-weight: 900;
-  color: #ffd700;
-
-  text-shadow:
-    1px 1px 0 #8a6500,
-    2px 2px 0 #8a6500,
-    0 0 8px rgba(255,215,0,0.4),
-    0 0 16px rgba(255,215,0,0.2);
-}
-
-.milestone-text {
-  font-size: 16px;
-  color: white;
-  line-height: 1.4;
-}
   </style>
 </head>
 
@@ -125,123 +104,87 @@
 
   <h1>📜 Historie der Fitheid</h1>
 
-  <div class="dossier-intro">
-  <div class="dossier-title">📋 OFFICIEEL DOSSIER</div>
-  <div class="dossier-status">Status: onderzoek lopende 🔍</div>
-  <p>
-    Sinds de oprichting onderzoekt de commissie dagelijks één vraag:<br>
-    <strong>Is Memphis Depay fit?</strong>
-  </p>
-  </div>
+  <div class="card">
+
+    <div class="dossier-intro">
+      <div class="dossier-title">📋 OFFICIEEL DOSSIER</div>
+      <div class="dossier-status">Status: onderzoek lopende 🔍</div>
+      <p>
+        Sinds de oprichting onderzoekt de commissie dagelijks één vraag:<br>
+        <strong>Is Memphis Depay fit?</strong>
+      </p>
+    </div>
 
     <div class="event">
-<h2>🔴 29 mei 2026</h2>
-<p>
-Domeinnaam gekocht voor €1,65. 💰<br>
-Niemand wist waar dit toe zou leiden. 🤷
-</p>
-</div>
+      <h2>🔴 29 mei 2026</h2>
+      <p>Domeinnaam gekocht voor €1,65. 💰<br>Niemand wist waar dit toe zou leiden. 🤷</p>
+    </div>
 
-<div class="event">
-<h2>🔴 30 mei 2026</h2>
-<p>
-Website gelanceerd. 🚀<br>
-Onderzoekscommissie opgericht. 🔍
-</p>
-</div>
+    <div class="event">
+      <h2>🔴 30 mei 2026</h2>
+      <p>Website gelanceerd. 🚀<br>Onderzoekscommissie opgericht. 🔍</p>
+    </div>
 
-<div class="event">
-<h2>🔴 31 mei 2026</h2>
-<p>
-Eerste bezoekers gesignaleerd. 👀<br>
-Memphis werd hierdoor niet fitter. ❌
-</p>
-</div>
+    <div class="event">
+      <h2>🔴 31 mei 2026</h2>
+      <p>Eerste bezoekers gesignaleerd. 👀<br>Memphis werd hierdoor niet fitter. ❌</p>
+    </div>
 
-<div class="event">
-<h2>🔴 1 juni 2026</h2>
-<p>
-Bezoekers uit 17 landen. 🌍<br>
-Niemand kon bevestigen dat Memphis fit was. 🤔
-</p>
-</div>
+    <div class="event">
+      <h2>🔴 1 juni 2026</h2>
+      <p>Bezoekers uit 17 landen. 🌍<br>Niemand kon bevestigen dat Memphis fit was. 🤔</p>
+    </div>
 
-<div class="event">
-<h2>🔴 3 juni 2026</h2>
-<p>
-Koeman neemt niet op. 📞<br>
-Status blijft NEE. 🚨
-</p>
-</div>
+    <div class="event">
+      <h2>🔴 3 juni 2026</h2>
+      <p>Koeman neemt niet op. 📞<br>Status blijft NEE. 🚨</p>
+    </div>
 
-<div class="event">
-<h2>🔴 5 juni 2026</h2>
-<p>
-Speelminuten waargenomen. ⚽<br>
-Commissie blijft sceptisch. 🔍
-</p>
-</div>
+    <div class="event">
+      <h2>🔴 5 juni 2026</h2>
+      <p>Speelminuten waargenomen. ⚽<br>Commissie blijft sceptisch. 🔍</p>
+    </div>
 
-<div class="event">
-<h2>🔴 8 juni 2026</h2>
-<p>
-45 minuten gespeeld. ⏱️<br>
-Fitheid nog steeds onderwerp van onderzoek. 📋
-</p>
-</div>
+    <div class="event">
+      <h2>🔴 8 juni 2026</h2>
+      <p>45 minuten gespeeld. ⏱️<br>Fitheid nog steeds onderwerp van onderzoek. 📋</p>
+    </div>
 
-<div class="event">
-<h2>🏆 9 juni 2026</h2>
-<p>
-1000 bezoekers bereikt. 🎉<br>
-Memphis daardoor exact 0 keer fitter geworden. 😅
-</p>
-</div>
+    <div class="event">
+      <h2>🏆 9 juni 2026</h2>
+      <p>1000 bezoekers bereikt. 🎉<br>Memphis daardoor exact 0 keer fitter geworden. 😅</p>
+    </div>
 
-<div class="event">
-<h2>🔴 10 juni 2026</h2>
-<p>
-Koeman: "Niet 100% fit." 🎙️<br>
-De commissie voelt zich gehoord. 👀
-</p>
-</div>
+    <div class="event">
+      <h2>🔴 10 juni 2026</h2>
+      <p>Koeman: "Niet 100% fit." 🎙️<br>De commissie voelt zich gehoord. 👀</p>
+    </div>
 
-<div class="event">
-<h2>🔴 11 juni 2026</h2>
-<p>
-NOS-peiling met bijna 1 miljoen stemmen. 📊<br>
-Nederland kiest liever Malen. ⚽
-</p>
-</div>
+    <div class="event">
+      <h2>🔴 11 juni 2026</h2>
+      <p>NOS-peiling met bijna 1 miljoen stemmen. 📊<br>Nederland kiest liever Malen. ⚽</p>
+    </div>
 
-<div class="event">
-<h2>🏆 12 juni 2026</h2>
+    <div class="event">
+      <h2>🏆 12 juni 2026</h2>
 
-<div class="milestone">
-  <span class="gold-number">10.000</span>
-&nbsp;
-<span class="milestone-text">bezoekers per dag bereikt. 📈</span>
-</div>
+      <div class="milestone">
+        <span class="gold-number">10.000</span>
+        <span class="milestone-text">bezoekers per dag bereikt. 📈</span>
+      </div>
 
-<p>
-Website officieel fitter dan Memphis. 🏃
-</p>
+      <p>Website officieel fitter dan Memphis. 🏃</p>
+    </div>
 
-</div>
-
-<div class="event">
-<h2>📋 Huidige status</h2>
-<p>
-Onderzoek loopt nog. 🔍<br>
-Dossier blijft open. 🚨
-</p>
-</div>
+    <div class="event">
+      <h2>📋 Huidige status</h2>
+      <p>Onderzoek loopt nog. 🔍<br>Dossier blijft open. 🚨</p>
+    </div>
 
     <br>
     <a href="index.html">⬅️ Terug naar de status</a>
+
   </div>
 
 </body>
 </html>
-
-
