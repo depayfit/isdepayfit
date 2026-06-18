@@ -14,28 +14,22 @@
       padding: 24px;
     }
 
-    h1 {
-      font-size: 36px;
-      margin-bottom: 8px;
-    }
-
-    .sub {
-      color: #aaa;
-      margin-bottom: 24px;
-    }
+    h1 { font-size: 36px; margin-bottom: 8px; }
+    .sub { color: #aaa; margin-bottom: 24px; }
 
     textarea, input {
       width: 100%;
-      max-width: 360px;
+      max-width: 380px;
       padding: 14px;
       margin: 8px 0;
       border-radius: 12px;
       border: none;
       font-size: 18px;
+      box-sizing: border-box;
     }
 
     button {
-      margin-top: 20px;
+      margin-top: 16px;
       padding: 18px 28px;
       font-size: 22px;
       font-weight: bold;
@@ -46,6 +40,13 @@
       cursor: pointer;
     }
 
+    .secondary {
+      background: #333;
+      color: white;
+      font-size: 16px;
+      padding: 12px 18px;
+    }
+
     .result {
       margin-top: 32px;
       font-size: 30px;
@@ -54,33 +55,88 @@
     }
 
     .small {
-      font-size: 16px;
+      font-size: 15px;
       color: #888;
       margin-top: 24px;
+      line-height: 1.5;
     }
+
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <h1>🥃 Shot Roulette</h1>
-  <div class="sub">Wie betaalt? En wat drinken we?</div>
+  <div id="app">
+    <h1>🥃 Shot Roulette</h1>
+    <div class="sub">Wie betaalt de volgende ronde?</div>
 
-  <textarea id="players" rows="3" placeholder="Voorletters/namen, bv: R, T, M, K"></textarea>
-  <textarea id="shots" rows="4" placeholder="Shotjes, bv: Tequila, Flügel, Jäger, Sambuca"></textarea>
+    <textarea id="players" rows="3" placeholder="Voorletters/namen, bv: R, T, M, K"></textarea>
 
-  <br />
+    <br />
 
-  <button onclick="spin()">DRAAIEN</button>
+    <button onclick="spin()">DRAAIEN</button>
 
-  <div class="result" id="result">
-    Vul namen en shotjes in.
+    <div class="result" id="result">
+      Vul de spelers in.
+    </div>
+
+    <div class="small">
+      Geen discussie. Het rad heeft gesproken.
+    </div>
   </div>
 
-  <div class="small">
-    Geen discussie. Het rad heeft gesproken.
+  <div id="admin" class="hidden">
+    <h1>🔧 Backoffice</h1>
+    <div class="sub">Beheer hier de shotjes van de kroeg</div>
+
+    <textarea id="shotsAdmin" rows="8" placeholder="Bijvoorbeeld: Tequila, Flügel, Jäger, Sambuca"></textarea>
+
+    <br />
+
+    <button onclick="saveShots()">OPSLAAN</button>
+    <br />
+    <button class="secondary" onclick="goToApp()">Naar roulette</button>
+
+    <div class="result" id="adminResult"></div>
+
+    <div class="small">
+      Deze shotjes worden opgeslagen in deze browser.
+    </div>
   </div>
 
   <script>
+    const defaultShots = [
+      "Tequila",
+      "Flügel",
+      "Jägermeister",
+      "Sambuca",
+      "Vodka",
+      "Dropshot"
+    ];
+
+    function getShots() {
+      const saved = localStorage.getItem("shotjes");
+      if (!saved) return defaultShots;
+      return JSON.parse(saved);
+    }
+
+    function saveShots() {
+      const value = document.getElementById("shotsAdmin").value;
+
+      const shots = value
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+
+      if (shots.length < 1) {
+        document.getElementById("adminResult").innerHTML = "Vul minimaal 1 shotje in.";
+        return;
+      }
+
+      localStorage.setItem("shotjes", JSON.stringify(shots));
+      document.getElementById("adminResult").innerHTML = "✅ Shotjes opgeslagen.";
+    }
+
     function pickRandom(list) {
       return list[Math.floor(Math.random() * list.length)];
     }
@@ -91,15 +147,11 @@
         .map(item => item.trim())
         .filter(Boolean);
 
-      const shots = document.getElementById("shots").value
-        .split(",")
-        .map(item => item.trim())
-        .filter(Boolean);
-
+      const shots = getShots();
       const result = document.getElementById("result");
 
-      if (players.length < 2 || shots.length < 1) {
-        result.innerHTML = "Minimaal 2 spelers en 1 shotje invullen.";
+      if (players.length < 2) {
+        result.innerHTML = "Minimaal 2 spelers invullen.";
         return;
       }
 
@@ -114,6 +166,27 @@
           💸 ${player} betaalt
         `;
       }, 1200);
+    }
+
+    function showAdmin() {
+      document.getElementById("app").classList.add("hidden");
+      document.getElementById("admin").classList.remove("hidden");
+      document.getElementById("shotsAdmin").value = getShots().join(", ");
+    }
+
+    function showApp() {
+      document.getElementById("admin").classList.add("hidden");
+      document.getElementById("app").classList.remove("hidden");
+    }
+
+    function goToApp() {
+      window.location.href = window.location.pathname;
+    }
+
+    if (window.location.hash === "#admin") {
+      showAdmin();
+    } else {
+      showApp();
     }
   </script>
 
