@@ -1,372 +1,494 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shot Roulette</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
-      text-align: center;
-      padding: 18px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shot Roulette</title>
 
-    h1 {
-      font-size: 34px;
-      margin-bottom: 6px;
-    }
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background:
+      radial-gradient(circle at top, #3a2200, #090909 55%),
+      #090909;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    overflow-x: hidden;
+  }
 
-    .sub {
-      color: #aaa;
-      margin-bottom: 18px;
-    }
+  h1 {
+    margin: 8px 0 4px;
+    font-size: 34px;
+    color: #ffcc33;
+    text-shadow: 0 0 18px rgba(255, 204, 51, .8);
+  }
 
-    textarea {
-      width: 100%;
-      max-width: 380px;
-      padding: 14px;
-      margin: 8px 0 14px;
-      border-radius: 12px;
-      border: none;
-      font-size: 18px;
-      box-sizing: border-box;
-    }
+  .sub {
+    color: #ddd;
+    margin-bottom: 14px;
+  }
 
-    .wheel-wrap {
-      position: relative;
-      width: 320px;
-      height: 320px;
-      margin: 18px auto;
-    }
+  textarea {
+    width: 100%;
+    max-width: 390px;
+    padding: 14px;
+    margin: 8px 0 12px;
+    border-radius: 14px;
+    border: 2px solid #ffcc33;
+    font-size: 18px;
+    box-sizing: border-box;
+    background: #181818;
+    color: white;
+  }
 
-    canvas {
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      background: #222;
-      box-shadow: 0 0 30px rgba(255, 204, 0, 0.25);
-    }
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin-top: 10px;
+  }
 
-    .pointer {
-      position: absolute;
-      top: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 18px solid transparent;
-      border-right: 18px solid transparent;
-      border-top: 34px solid #ffcc00;
-      z-index: 5;
-      filter: drop-shadow(0 0 8px rgba(0,0,0,.7));
-    }
+  .wheel-card {
+    background: linear-gradient(180deg, #2b1b00, #0c0c0c);
+    border: 2px solid #ffcc33;
+    border-radius: 24px;
+    padding: 14px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow:
+      0 0 30px rgba(255, 204, 51, .25),
+      inset 0 0 20px rgba(255, 204, 51, .12);
+  }
 
-    button {
-      margin-top: 10px;
-      padding: 18px 30px;
-      font-size: 22px;
-      font-weight: bold;
-      border: none;
-      border-radius: 999px;
-      background: #ffcc00;
-      color: #111;
-      cursor: pointer;
-    }
+  .wheel-title {
+    font-weight: bold;
+    color: #ffcc33;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
 
-    button:disabled {
-      opacity: 0.5;
-    }
+  .wheel-wrap {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+  }
 
-    .secondary {
-      background: #333;
-      color: white;
-      font-size: 16px;
-      padding: 12px 18px;
-    }
+  canvas {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+  }
 
-    .result {
-      margin-top: 24px;
-      font-size: 28px;
-      font-weight: bold;
-      min-height: 95px;
-      line-height: 1.35;
-    }
+  .pointer {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 42px solid #ffdf57;
+    filter: drop-shadow(0 0 8px #000);
+  }
 
-    .small {
-      font-size: 15px;
-      color: #888;
-      margin-top: 22px;
-      line-height: 1.5;
-    }
+  button {
+    margin-top: 18px;
+    padding: 18px 34px;
+    font-size: 23px;
+    font-weight: 900;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #fff2a8, #ffbf00);
+    color: #111;
+    cursor: pointer;
+    box-shadow: 0 0 26px rgba(255, 204, 51, .55);
+  }
 
-    .hidden {
-      display: none;
+  button:disabled {
+    opacity: .45;
+  }
+
+  .secondary {
+    background: #333;
+    color: white;
+    font-size: 16px;
+    padding: 12px 18px;
+    box-shadow: none;
+  }
+
+  .result {
+    margin-top: 22px;
+    font-size: 28px;
+    font-weight: 900;
+    min-height: 110px;
+    line-height: 1.35;
+    text-shadow: 0 0 14px rgba(255, 204, 51, .45);
+  }
+
+  .small {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 20px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  @media (min-width: 820px) {
+    .stage {
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
     }
-  </style>
+  }
+</style>
 </head>
+
 <body>
 
-  <div id="app">
-    <h1>🥃 Shot Roulette</h1>
-    <div class="sub">Wie betaalt de volgende ronde?</div>
+<div id="app">
+  <h1>🥃 Shot Roulette</h1>
+  <div class="sub">Twee raderen. Eén slachtoffer. Eén shot.</div>
 
-    <textarea id="players" rows="3" placeholder="Voorletters/namen, bv: R, T, M, K"></textarea>
+  <textarea id="players" rows="3" placeholder="Voorletters/namen, bv: R, T, M, K"></textarea>
 
-    <div class="wheel-wrap">
-      <div class="pointer"></div>
-      <canvas id="wheel" width="640" height="640"></canvas>
+  <div class="stage">
+    <div class="wheel-card">
+      <div class="wheel-title">WIE BETAALT?</div>
+      <div class="wheel-wrap">
+        <div class="pointer"></div>
+        <canvas id="playerWheel" width="700" height="700"></canvas>
+      </div>
     </div>
 
-    <button id="spinButton" onclick="spin()">DRAAIEN</button>
-
-    <div class="result" id="result">
-      Vul spelers in en draai het rad.
-    </div>
-
-    <div class="small">
-      Geen discussie. Het rad heeft gesproken.
-    </div>
-  </div>
-
-  <div id="admin" class="hidden">
-    <h1>🔧 Backoffice</h1>
-    <div class="sub">Beheer hier de shotjes van de kroeg</div>
-
-    <textarea id="shotsAdmin" rows="8" placeholder="Bijvoorbeeld: Tequila, Flügel, Jäger, Sambuca"></textarea>
-
-    <br />
-
-    <button onclick="saveShots()">OPSLAAN</button>
-    <br />
-    <button class="secondary" onclick="goToApp()">Naar roulette</button>
-
-    <div class="result" id="adminResult"></div>
-
-    <div class="small">
-      Deze shotjes worden opgeslagen in deze browser.
+    <div class="wheel-card">
+      <div class="wheel-title">WELK SHOTJE?</div>
+      <div class="wheel-wrap">
+        <div class="pointer"></div>
+        <canvas id="shotWheel" width="700" height="700"></canvas>
+      </div>
     </div>
   </div>
 
-  <script>
-    const defaultShots = [
-      "Tequila",
-      "Flügel",
-      "Jägermeister",
-      "Sambuca",
-      "Vodka",
-      "Dropshot"
-    ];
+  <button id="spinButton" onclick="spin()">DRAAIEN</button>
 
-    const colors = [
-      "#ffcc00",
-      "#ff4d4d",
-      "#4dd2ff",
-      "#7dff4d",
-      "#c44dff",
-      "#ff8c1a",
-      "#ffffff",
-      "#00ffcc"
-    ];
+  <div class="result" id="result">
+    Vul spelers in en laat het lot beslissen.
+  </div>
 
-    const canvas = document.getElementById("wheel");
-    const ctx = canvas.getContext("2d");
-    const size = canvas.width;
-    const center = size / 2;
+  <div class="small">
+    Geen discussie. Het casino heeft gesproken.
+  </div>
+</div>
 
-    let currentRotation = 0;
-    let spinning = false;
-    let wheelItems = [];
+<div id="admin" class="hidden">
+  <h1>🔧 Backoffice</h1>
+  <div class="sub">Shotjes van deze kroeg beheren</div>
 
-    function getShots() {
-      try {
-        const saved = localStorage.getItem("shotjes");
-        if (!saved) return defaultShots;
+  <textarea id="shotsAdmin" rows="8" placeholder="Tequila, Flügel, Jägermeister, Sambuca"></textarea>
+  <br>
 
-        const shots = JSON.parse(saved);
-        if (!Array.isArray(shots) || shots.length === 0) {
-          return defaultShots;
-        }
+  <button onclick="saveShots()">OPSLAAN</button>
+  <br>
+  <button class="secondary" onclick="goToApp()">Naar roulette</button>
 
-        return shots;
-      } catch (e) {
-        return defaultShots;
-      }
-    }
+  <div class="result" id="adminResult"></div>
+  <div class="small">Opgeslagen in deze browser.</div>
+</div>
 
-    function getPlayers() {
-      return document.getElementById("players").value
-        .split(",")
-        .map(item => item.trim())
-        .filter(Boolean);
-    }
+<script>
+const defaultShots = [
+  "Tequila",
+  "Flügel",
+  "Jägermeister",
+  "Sambuca",
+  "Vodka",
+  "Dropshot"
+];
 
-    function buildWheelItems() {
-      const players = getPlayers();
+const colors = [
+  "#ffcc33",
+  "#d41414",
+  "#111111",
+  "#ffffff",
+  "#ff7a00",
+  "#8a2be2",
+  "#00c2ff",
+  "#00d084"
+];
 
-      if (players.length < 2) {
-        wheelItems = ["R", "M", "T", "K"];
-      } else {
-        wheelItems = players;
-      }
-    }
+const playerCanvas = document.getElementById("playerWheel");
+const shotCanvas = document.getElementById("shotWheel");
 
-    function drawWheel(rotation = 0) {
-      buildWheelItems();
+let playerRotation = 0;
+let shotRotation = 0;
+let spinning = false;
 
-      const total = wheelItems.length;
-      const slice = (Math.PI * 2) / total;
+function getShots() {
+  try {
+    const saved = localStorage.getItem("shotjes");
+    if (!saved) return defaultShots;
+    const shots = JSON.parse(saved);
+    return Array.isArray(shots) && shots.length ? shots : defaultShots;
+  } catch {
+    return defaultShots;
+  }
+}
 
-      ctx.clearRect(0, 0, size, size);
-      ctx.save();
-      ctx.translate(center, center);
-      ctx.rotate(rotation);
+function getPlayers() {
+  return document.getElementById("players").value
+    .split(",")
+    .map(x => x.trim())
+    .filter(Boolean);
+}
 
-      for (let i = 0; i < total; i++) {
-        const start = i * slice;
-        const end = start + slice;
+function drawCasinoWheel(canvas, items, rotation, centerText) {
+  const ctx = canvas.getContext("2d");
+  const size = canvas.width;
+  const center = size / 2;
+  const radius = center - 44;
+  const total = items.length;
+  const slice = Math.PI * 2 / total;
 
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.arc(0, 0, center - 10, start, end);
-        ctx.closePath();
-        ctx.fillStyle = colors[i % colors.length];
-        ctx.fill();
+  ctx.clearRect(0, 0, size, size);
 
-        ctx.strokeStyle = "#111";
-        ctx.lineWidth = 6;
-        ctx.stroke();
+  ctx.save();
+  ctx.translate(center, center);
 
-        ctx.save();
-        ctx.rotate(start + slice / 2);
-        ctx.textAlign = "right";
-        ctx.fillStyle = "#111";
-        ctx.font = "bold 42px Arial";
-        ctx.fillText(wheelItems[i], center - 55, 14);
-        ctx.restore();
-      }
+  // buiten glow
+  ctx.beginPath();
+  ctx.arc(0, 0, center - 10, 0, Math.PI * 2);
+  ctx.fillStyle = "#070707";
+  ctx.fill();
 
-      ctx.beginPath();
-      ctx.arc(0, 0, 55, 0, Math.PI * 2);
-      ctx.fillStyle = "#111";
-      ctx.fill();
+  // lampjes rand
+  for (let i = 0; i < 36; i++) {
+    const a = i * Math.PI * 2 / 36;
+    const x = Math.cos(a) * (center - 24);
+    const y = Math.sin(a) * (center - 24);
 
-      ctx.fillStyle = "#ffcc00";
-      ctx.font = "bold 34px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText("SHOT", 0, 12);
+    ctx.beginPath();
+    ctx.arc(x, y, i % 2 === 0 ? 8 : 5, 0, Math.PI * 2);
+    ctx.fillStyle = i % 2 === 0 ? "#fff3a3" : "#ffcc33";
+    ctx.shadowBlur = 16;
+    ctx.shadowColor = "#ffcc33";
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
 
-      ctx.restore();
-    }
+  // gouden metalen ring
+  const ring = ctx.createRadialGradient(0, 0, radius - 40, 0, 0, center);
+  ring.addColorStop(0, "#7a4a00");
+  ring.addColorStop(.45, "#ffdf57");
+  ring.addColorStop(.7, "#8a5a00");
+  ring.addColorStop(1, "#fff1a8");
 
-    function spin() {
-      if (spinning) return;
+  ctx.beginPath();
+  ctx.arc(0, 0, radius + 28, 0, Math.PI * 2);
+  ctx.fillStyle = ring;
+  ctx.fill();
 
-      const players = getPlayers();
-      const shots = getShots();
-      const result = document.getElementById("result");
-      const button = document.getElementById("spinButton");
+  ctx.beginPath();
+  ctx.arc(0, 0, radius + 2, 0, Math.PI * 2);
+  ctx.fillStyle = "#111";
+  ctx.fill();
 
-      if (players.length < 2) {
-        result.innerHTML = "Minimaal 2 spelers invullen.";
-        return;
-      }
+  ctx.rotate(rotation);
 
-      wheelItems = players;
-      spinning = true;
-      button.disabled = true;
-      result.innerHTML = "🎲 Het rad draait...";
+  // vakken
+  for (let i = 0; i < total; i++) {
+    const start = i * slice;
+    const end = start + slice;
 
-      const total = wheelItems.length;
-      const sliceDeg = 360 / total;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, radius, start, end);
+    ctx.closePath();
 
-      const winnerIndex = Math.floor(Math.random() * total);
-      const shot = shots[Math.floor(Math.random() * shots.length)];
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
 
-      const pointerDeg = 270;
-      const winnerCenterDeg = winnerIndex * sliceDeg + sliceDeg / 2;
-      const targetDeg = pointerDeg - winnerCenterDeg;
+    ctx.strokeStyle = "#ffdf57";
+    ctx.lineWidth = 5;
+    ctx.stroke();
 
-      const extraSpins = 6 * 360;
-      const randomOffset = (Math.random() - 0.5) * (sliceDeg * 0.45);
-      const finalDeg = extraSpins + targetDeg + randomOffset;
+    // highlight
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, radius, start, start + slice * .22);
+    ctx.closePath();
+    ctx.fillStyle = "rgba(255,255,255,.18)";
+    ctx.fill();
 
-      const startRotation = currentRotation;
-      const endRotation = currentRotation + finalDeg * Math.PI / 180;
+    // tekst
+    ctx.save();
+    ctx.rotate(start + slice / 2);
+    ctx.textAlign = "right";
+    ctx.fillStyle = colors[i % colors.length] === "#111111" ? "#ffcc33" : "#111";
+    ctx.font = total > 6 ? "bold 34px Arial" : "bold 42px Arial";
+    ctx.fillText(items[i].toUpperCase().slice(0, 12), radius - 34, 12);
+    ctx.restore();
+  }
 
-      const duration = 3600;
-      const startTime = performance.now();
+  ctx.restore();
 
-      function animate(now) {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 1);
+  // middenknop
+  ctx.save();
+  ctx.translate(center, center);
 
-        const easeOut = 1 - Math.pow(1 - progress, 4);
-        currentRotation = startRotation + (endRotation - startRotation) * easeOut;
+  ctx.beginPath();
+  ctx.arc(0, 0, 76, 0, Math.PI * 2);
+  ctx.fillStyle = "#050505";
+  ctx.fill();
 
-        drawWheel(currentRotation);
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = "#ffcc33";
+  ctx.shadowBlur = 25;
+  ctx.shadowColor = "#ffcc33";
+  ctx.stroke();
+  ctx.shadowBlur = 0;
 
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          spinning = false;
-          button.disabled = false;
+  ctx.fillStyle = "#ffcc33";
+  ctx.font = "bold 32px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(centerText, 0, -4);
 
-          result.innerHTML = `
-            🥃 ${shot}<br>
-            💸 ${wheelItems[winnerIndex]} betaalt
-          `;
-        }
-      }
+  ctx.font = "32px Arial";
+  ctx.fillText("🥃", 0, 42);
 
+  ctx.restore();
+}
+
+function drawAll() {
+  const players = getPlayers();
+  drawCasinoWheel(playerCanvas, players.length >= 2 ? players : ["R", "M", "T", "K"], playerRotation, "SPIN");
+  drawCasinoWheel(shotCanvas, getShots(), shotRotation, "SHOT");
+}
+
+function spinOne(canvas, items, startRotation, winnerIndex, duration, callback) {
+  const total = items.length;
+  const sliceDeg = 360 / total;
+  const pointerDeg = 270;
+  const winnerCenterDeg = winnerIndex * sliceDeg + sliceDeg / 2;
+  const targetDeg = pointerDeg - winnerCenterDeg;
+  const extra = 7 * 360;
+  const offset = (Math.random() - .5) * sliceDeg * .35;
+  const finalDeg = extra + targetDeg + offset;
+
+  const endRotation = startRotation + finalDeg * Math.PI / 180;
+  const startTime = performance.now();
+
+  function animate(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 4);
+    const rotation = startRotation + (endRotation - startRotation) * ease;
+
+    callback(rotation, progress);
+
+    if (progress < 1) {
       requestAnimationFrame(animate);
     }
+  }
 
-    function saveShots() {
-      const value = document.getElementById("shotsAdmin").value;
+  requestAnimationFrame(animate);
+}
 
-      const shots = value
-        .split(",")
-        .map(item => item.trim())
-        .filter(Boolean);
+function spin() {
+  if (spinning) return;
 
-      if (shots.length < 1) {
-        document.getElementById("adminResult").innerHTML = "Vul minimaal 1 shotje in.";
-        return;
-      }
+  const players = getPlayers();
+  const shots = getShots();
+  const result = document.getElementById("result");
+  const button = document.getElementById("spinButton");
 
-      localStorage.setItem("shotjes", JSON.stringify(shots));
-      document.getElementById("adminResult").innerHTML = "✅ Shotjes opgeslagen.";
-    }
+  if (players.length < 2) {
+    result.innerHTML = "Minimaal 2 spelers invullen.";
+    return;
+  }
 
-    function showAdmin() {
-      document.getElementById("app").classList.add("hidden");
-      document.getElementById("admin").classList.remove("hidden");
-      document.getElementById("shotsAdmin").value = getShots().join(", ");
-    }
+  spinning = true;
+  button.disabled = true;
+  result.innerHTML = "🎰 De raderen draaien...";
 
-    function showApp() {
-      document.getElementById("admin").classList.add("hidden");
-      document.getElementById("app").classList.remove("hidden");
-      drawWheel();
-    }
+  const playerWinner = Math.floor(Math.random() * players.length);
+  const shotWinner = Math.floor(Math.random() * shots.length);
 
-    function goToApp() {
-      window.location.href = window.location.pathname;
-    }
+  let pDone = false;
+  let sDone = false;
 
-    document.getElementById("players").addEventListener("input", () => {
-      if (!spinning) drawWheel(currentRotation);
+  spinOne(playerCanvas, players, playerRotation, playerWinner, 3800, (rot, progress) => {
+    playerRotation = rot;
+    drawAll();
+    if (progress === 1) pDone = true;
+    finishCheck();
+  });
+
+  setTimeout(() => {
+    spinOne(shotCanvas, shots, shotRotation, shotWinner, 4300, (rot, progress) => {
+      shotRotation = rot;
+      drawAll();
+      if (progress === 1) sDone = true;
+      finishCheck();
     });
+  }, 400);
 
-    if (window.location.hash === "#admin") {
-      showAdmin();
-    } else {
-      showApp();
-    }
-  </script>
+  function finishCheck() {
+    if (!pDone || !sDone) return;
+
+    spinning = false;
+    button.disabled = false;
+
+    result.innerHTML = `
+      🥃 ${shots[shotWinner].toUpperCase()}!<br>
+      💸 ${players[playerWinner].toUpperCase()} BETAALT DE RONDE
+    `;
+  }
+}
+
+function saveShots() {
+  const value = document.getElementById("shotsAdmin").value;
+  const shots = value.split(",").map(x => x.trim()).filter(Boolean);
+
+  if (!shots.length) {
+    document.getElementById("adminResult").innerHTML = "Vul minimaal 1 shotje in.";
+    return;
+  }
+
+  localStorage.setItem("shotjes", JSON.stringify(shots));
+  document.getElementById("adminResult").innerHTML = "✅ Shotjes opgeslagen.";
+}
+
+function showAdmin() {
+  document.getElementById("app").classList.add("hidden");
+  document.getElementById("admin").classList.remove("hidden");
+  document.getElementById("shotsAdmin").value = getShots().join(", ");
+}
+
+function showApp() {
+  document.getElementById("admin").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+  drawAll();
+}
+
+function goToApp() {
+  window.location.href = window.location.pathname;
+}
+
+document.getElementById("players").addEventListener("input", drawAll);
+
+if (window.location.hash === "#admin") {
+  showAdmin();
+} else {
+  showApp();
+}
+</script>
 
 </body>
 </html>
