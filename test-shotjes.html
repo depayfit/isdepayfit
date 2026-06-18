@@ -1,492 +1,332 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shot Roulette</title>
 
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background:
-      radial-gradient(circle at top, #3a2200, #090909 55%),
-      #090909;
-    color: white;
-    text-align: center;
-    padding: 16px;
-    overflow-x: hidden;
-  }
-
-  h1 {
-    margin: 8px 0 4px;
-    font-size: 34px;
-    color: #ffcc33;
-    text-shadow: 0 0 18px rgba(255, 204, 51, .8);
-  }
-
-  .sub {
-    color: #ddd;
-    margin-bottom: 14px;
-  }
-
-  textarea {
-    width: 100%;
-    max-width: 390px;
-    padding: 14px;
-    margin: 8px 0 12px;
-    border-radius: 14px;
-    border: 2px solid #ffcc33;
-    font-size: 18px;
-    box-sizing: border-box;
-    background: #181818;
-    color: white;
-  }
-
-  .stage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    margin-top: 10px;
-  }
-
-  .wheel-card {
-    background: linear-gradient(180deg, #2b1b00, #0c0c0c);
-    border: 2px solid #ffcc33;
-    border-radius: 24px;
-    padding: 14px;
-    width: 100%;
-    max-width: 380px;
-    box-shadow:
-      0 0 30px rgba(255, 204, 51, .25),
-      inset 0 0 20px rgba(255, 204, 51, .12);
-  }
-
-  .wheel-title {
-    font-weight: bold;
-    color: #ffcc33;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
-  }
-
-  .wheel-wrap {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    margin: 0 auto;
-  }
-
-  canvas {
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-  }
-
-  .pointer {
-    position: absolute;
-    top: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 5;
-    width: 0;
-    height: 0;
-    border-left: 18px solid transparent;
-    border-right: 18px solid transparent;
-    border-top: 42px solid #ffdf57;
-    filter: drop-shadow(0 0 8px #000);
-  }
-
-  button {
-    margin-top: 18px;
-    padding: 18px 34px;
-    font-size: 23px;
-    font-weight: 900;
-    border: none;
-    border-radius: 999px;
-    background: linear-gradient(180deg, #fff2a8, #ffbf00);
-    color: #111;
-    cursor: pointer;
-    box-shadow: 0 0 26px rgba(255, 204, 51, .55);
-  }
-
-  button:disabled {
-    opacity: .45;
-  }
-
-  .secondary {
-    background: #333;
-    color: white;
-    font-size: 16px;
-    padding: 12px 18px;
-    box-shadow: none;
-  }
-
-  .result {
-    margin-top: 22px;
-    font-size: 28px;
-    font-weight: 900;
-    min-height: 110px;
-    line-height: 1.35;
-    text-shadow: 0 0 14px rgba(255, 204, 51, .45);
-  }
-
-  .small {
-    font-size: 14px;
-    color: #aaa;
-    margin-top: 20px;
-  }
-
-  .hidden {
-    display: none;
-  }
-
-  @media (min-width: 820px) {
-    .stage {
-      flex-direction: row;
-      justify-content: center;
-      align-items: flex-start;
-    }
-  }
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:radial-gradient(circle at top,#3a2200,#080808 60%);
+  color:white;
+  text-align:center;
+  padding:18px;
+}
+h1{color:#ffcc33;text-shadow:0 0 15px #ffcc33;}
+textarea{
+  width:100%;
+  max-width:390px;
+  padding:15px;
+  border-radius:14px;
+  border:2px solid #ffcc33;
+  background:#181818;
+  color:white;
+  font-size:18px;
+}
+button{
+  margin-top:18px;
+  padding:17px 30px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(#fff2a8,#ffbf00);
+  font-size:22px;
+  font-weight:900;
+}
+.hidden{display:none;}
+.stage{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  align-items:center;
+}
+.card{
+  border:2px solid #ffcc33;
+  border-radius:24px;
+  padding:14px;
+  background:#111;
+  max-width:370px;
+  width:100%;
+}
+canvas{
+  width:300px;
+  height:300px;
+  border-radius:50%;
+}
+.wrap{position:relative;}
+.pointer{
+  position:absolute;
+  top:-5px;
+  left:50%;
+  transform:translateX(-50%);
+  border-left:18px solid transparent;
+  border-right:18px solid transparent;
+  border-top:42px solid #ffdf57;
+  z-index:5;
+}
+.result{
+  font-size:28px;
+  font-weight:900;
+  margin-top:22px;
+  min-height:90px;
+}
+@media(min-width:820px){
+  .stage{flex-direction:row;justify-content:center;}
+}
 </style>
 </head>
 
 <body>
 
-<div id="app">
+<div id="namesPage">
   <h1>🥃 Shot Roulette</h1>
-  <div class="sub">Twee raderen. Eén slachtoffer. Eén shot.</div>
+  <p>Vul namen of voorletters in.</p>
 
-  <textarea id="players" rows="3" placeholder="Voorletters/namen, bv: R, T, M, K"></textarea>
+  <textarea id="playersInput" rows="5" placeholder="Bijvoorbeeld: Roberto, Mike, T, K"></textarea>
+  <br>
+  <button onclick="startGame()">START ROULETTE</button>
+
+  <p style="color:#aaa;margin-top:25px;">Tip: snel in de kroeg? Gebruik alleen voorletters.</p>
+</div>
+
+<div id="wheelPage" class="hidden">
+  <h1>🎰 Shot Casino</h1>
 
   <div class="stage">
-    <div class="wheel-card">
-      <div class="wheel-title">WIE BETAALT?</div>
-      <div class="wheel-wrap">
+    <div class="card">
+      <h3>WIE BETAALT?</h3>
+      <div class="wrap">
         <div class="pointer"></div>
         <canvas id="playerWheel" width="700" height="700"></canvas>
       </div>
     </div>
 
-    <div class="wheel-card">
-      <div class="wheel-title">WELK SHOTJE?</div>
-      <div class="wheel-wrap">
+    <div class="card">
+      <h3>WELK SHOTJE?</h3>
+      <div class="wrap">
         <div class="pointer"></div>
         <canvas id="shotWheel" width="700" height="700"></canvas>
       </div>
     </div>
   </div>
 
-  <button id="spinButton" onclick="spin()">DRAAIEN</button>
+  <button id="spinBtn" onclick="spin()">DRAAIEN</button>
+  <br>
+  <button onclick="backToNames()" style="font-size:16px;background:#333;color:white;">Namen aanpassen</button>
 
-  <div class="result" id="result">
-    Vul spelers in en laat het lot beslissen.
-  </div>
-
-  <div class="small">
-    Geen discussie. Het casino heeft gesproken.
-  </div>
+  <div id="result" class="result">Laat het lot beslissen.</div>
 </div>
 
-<div id="admin" class="hidden">
+<div id="adminPage" class="hidden">
   <h1>🔧 Backoffice</h1>
-  <div class="sub">Shotjes van deze kroeg beheren</div>
+  <p>Shotjes beheren</p>
 
-  <textarea id="shotsAdmin" rows="8" placeholder="Tequila, Flügel, Jägermeister, Sambuca"></textarea>
+  <textarea id="shotsInput" rows="8" placeholder="Tequila, Flügel, Jägermeister, Sambuca"></textarea>
   <br>
-
   <button onclick="saveShots()">OPSLAAN</button>
-  <br>
-  <button class="secondary" onclick="goToApp()">Naar roulette</button>
 
-  <div class="result" id="adminResult"></div>
-  <div class="small">Opgeslagen in deze browser.</div>
+  <div id="adminResult" class="result"></div>
 </div>
 
 <script>
-const defaultShots = [
-  "Tequila",
-  "Flügel",
-  "Jägermeister",
-  "Sambuca",
-  "Vodka",
-  "Dropshot"
-];
+const defaultShots=["Tequila","Flügel","Jägermeister","Sambuca","Vodka","Dropshot"];
+const colors=["#ffcc33","#d41414","#111111","#ffffff","#ff7a00","#8a2be2","#00c2ff","#00d084"];
 
-const colors = [
-  "#ffcc33",
-  "#d41414",
-  "#111111",
-  "#ffffff",
-  "#ff7a00",
-  "#8a2be2",
-  "#00c2ff",
-  "#00d084"
-];
+let players=[];
+let playerRot=0;
+let shotRot=0;
+let spinning=false;
 
-const playerCanvas = document.getElementById("playerWheel");
-const shotCanvas = document.getElementById("shotWheel");
+const playerCanvas=document.getElementById("playerWheel");
+const shotCanvas=document.getElementById("shotWheel");
 
-let playerRotation = 0;
-let shotRotation = 0;
-let spinning = false;
-
-function getShots() {
-  try {
-    const saved = localStorage.getItem("shotjes");
-    if (!saved) return defaultShots;
-    const shots = JSON.parse(saved);
-    return Array.isArray(shots) && shots.length ? shots : defaultShots;
-  } catch {
+function getShots(){
+  try{
+    const saved=localStorage.getItem("shotjes");
+    if(!saved) return defaultShots;
+    const arr=JSON.parse(saved);
+    return Array.isArray(arr)&&arr.length?arr:defaultShots;
+  }catch(e){
     return defaultShots;
   }
 }
 
-function getPlayers() {
-  return document.getElementById("players").value
+function startGame(){
+  players=document.getElementById("playersInput").value
     .split(",")
-    .map(x => x.trim())
+    .map(x=>x.trim())
     .filter(Boolean);
-}
 
-function drawCasinoWheel(canvas, items, rotation, centerText) {
-  const ctx = canvas.getContext("2d");
-  const size = canvas.width;
-  const center = size / 2;
-  const radius = center - 44;
-  const total = items.length;
-  const slice = Math.PI * 2 / total;
-
-  ctx.clearRect(0, 0, size, size);
-
-  ctx.save();
-  ctx.translate(center, center);
-
-  // buiten glow
-  ctx.beginPath();
-  ctx.arc(0, 0, center - 10, 0, Math.PI * 2);
-  ctx.fillStyle = "#070707";
-  ctx.fill();
-
-  // lampjes rand
-  for (let i = 0; i < 36; i++) {
-    const a = i * Math.PI * 2 / 36;
-    const x = Math.cos(a) * (center - 24);
-    const y = Math.sin(a) * (center - 24);
-
-    ctx.beginPath();
-    ctx.arc(x, y, i % 2 === 0 ? 8 : 5, 0, Math.PI * 2);
-    ctx.fillStyle = i % 2 === 0 ? "#fff3a3" : "#ffcc33";
-    ctx.shadowBlur = 16;
-    ctx.shadowColor = "#ffcc33";
-    ctx.fill();
-    ctx.shadowBlur = 0;
+  if(players.length<2){
+    alert("Vul minimaal 2 spelers in.");
+    return;
   }
 
-  // gouden metalen ring
-  const ring = ctx.createRadialGradient(0, 0, radius - 40, 0, 0, center);
-  ring.addColorStop(0, "#7a4a00");
-  ring.addColorStop(.45, "#ffdf57");
-  ring.addColorStop(.7, "#8a5a00");
-  ring.addColorStop(1, "#fff1a8");
+  document.getElementById("namesPage").classList.add("hidden");
+  document.getElementById("wheelPage").classList.remove("hidden");
+  drawAll();
+}
+
+function backToNames(){
+  document.getElementById("wheelPage").classList.add("hidden");
+  document.getElementById("namesPage").classList.remove("hidden");
+}
+
+function drawWheel(canvas,items,rotation,label){
+  const ctx=canvas.getContext("2d");
+  const size=canvas.width;
+  const c=size/2;
+  const r=c-55;
+  const slice=Math.PI*2/items.length;
+
+  ctx.clearRect(0,0,size,size);
+  ctx.save();
+  ctx.translate(c,c);
 
   ctx.beginPath();
-  ctx.arc(0, 0, radius + 28, 0, Math.PI * 2);
-  ctx.fillStyle = ring;
+  ctx.arc(0,0,c-15,0,Math.PI*2);
+  ctx.fillStyle="#050505";
   ctx.fill();
 
+  for(let i=0;i<34;i++){
+    const a=i*Math.PI*2/34;
+    ctx.beginPath();
+    ctx.arc(Math.cos(a)*(c-28),Math.sin(a)*(c-28),7,0,Math.PI*2);
+    ctx.fillStyle=i%2?"#ffcc33":"#fff2a8";
+    ctx.fill();
+  }
+
   ctx.beginPath();
-  ctx.arc(0, 0, radius + 2, 0, Math.PI * 2);
-  ctx.fillStyle = "#111";
+  ctx.arc(0,0,r+28,0,Math.PI*2);
+  ctx.fillStyle="#d99b00";
   ctx.fill();
 
   ctx.rotate(rotation);
 
-  // vakken
-  for (let i = 0; i < total; i++) {
-    const start = i * slice;
-    const end = start + slice;
-
+  for(let i=0;i<items.length;i++){
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.arc(0, 0, radius, start, end);
+    ctx.moveTo(0,0);
+    ctx.arc(0,0,r,i*slice,(i+1)*slice);
     ctx.closePath();
-
-    ctx.fillStyle = colors[i % colors.length];
+    ctx.fillStyle=colors[i%colors.length];
     ctx.fill();
-
-    ctx.strokeStyle = "#ffdf57";
-    ctx.lineWidth = 5;
+    ctx.strokeStyle="#ffdf57";
+    ctx.lineWidth=5;
     ctx.stroke();
 
-    // highlight
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.arc(0, 0, radius, start, start + slice * .22);
-    ctx.closePath();
-    ctx.fillStyle = "rgba(255,255,255,.18)";
-    ctx.fill();
-
-    // tekst
     ctx.save();
-    ctx.rotate(start + slice / 2);
-    ctx.textAlign = "right";
-    ctx.fillStyle = colors[i % colors.length] === "#111111" ? "#ffcc33" : "#111";
-    ctx.font = total > 6 ? "bold 34px Arial" : "bold 42px Arial";
-    ctx.fillText(items[i].toUpperCase().slice(0, 12), radius - 34, 12);
+    ctx.rotate(i*slice+slice/2);
+    ctx.textAlign="right";
+    ctx.fillStyle=colors[i%colors.length]==="#111111"?"#ffcc33":"#111";
+    ctx.font=items.length>6?"bold 32px Arial":"bold 42px Arial";
+    ctx.fillText(items[i].toUpperCase().slice(0,12),r-30,12);
     ctx.restore();
   }
 
   ctx.restore();
 
-  // middenknop
   ctx.save();
-  ctx.translate(center, center);
-
+  ctx.translate(c,c);
   ctx.beginPath();
-  ctx.arc(0, 0, 76, 0, Math.PI * 2);
-  ctx.fillStyle = "#050505";
+  ctx.arc(0,0,75,0,Math.PI*2);
+  ctx.fillStyle="#050505";
   ctx.fill();
-
-  ctx.lineWidth = 10;
-  ctx.strokeStyle = "#ffcc33";
-  ctx.shadowBlur = 25;
-  ctx.shadowColor = "#ffcc33";
+  ctx.lineWidth=9;
+  ctx.strokeStyle="#ffcc33";
   ctx.stroke();
-  ctx.shadowBlur = 0;
-
-  ctx.fillStyle = "#ffcc33";
-  ctx.font = "bold 32px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText(centerText, 0, -4);
-
-  ctx.font = "32px Arial";
-  ctx.fillText("🥃", 0, 42);
-
+  ctx.fillStyle="#ffcc33";
+  ctx.font="bold 32px Arial";
+  ctx.textAlign="center";
+  ctx.fillText(label,0,10);
   ctx.restore();
 }
 
-function drawAll() {
-  const players = getPlayers();
-  drawCasinoWheel(playerCanvas, players.length >= 2 ? players : ["R", "M", "T", "K"], playerRotation, "SPIN");
-  drawCasinoWheel(shotCanvas, getShots(), shotRotation, "SHOT");
+function drawAll(){
+  drawWheel(playerCanvas,players.length?players:["R","M","T","K"],playerRot,"WIE");
+  drawWheel(shotCanvas,getShots(),shotRot,"SHOT");
 }
 
-function spinOne(canvas, items, startRotation, winnerIndex, duration, callback) {
-  const total = items.length;
-  const sliceDeg = 360 / total;
-  const pointerDeg = 270;
-  const winnerCenterDeg = winnerIndex * sliceDeg + sliceDeg / 2;
-  const targetDeg = pointerDeg - winnerCenterDeg;
-  const extra = 7 * 360;
-  const offset = (Math.random() - .5) * sliceDeg * .35;
-  const finalDeg = extra + targetDeg + offset;
+function animateWheel(startRot,winnerIndex,total,duration,onUpdate,onDone){
+  const sliceDeg=360/total;
+  const pointerDeg=270;
+  const winnerDeg=winnerIndex*sliceDeg+sliceDeg/2;
+  const targetDeg=pointerDeg-winnerDeg;
+  const finalDeg=7*360+targetDeg;
+  const endRot=startRot+finalDeg*Math.PI/180;
+  const start=performance.now();
 
-  const endRotation = startRotation + finalDeg * Math.PI / 180;
-  const startTime = performance.now();
+  function frame(now){
+    const p=Math.min((now-start)/duration,1);
+    const ease=1-Math.pow(1-p,4);
+    const rot=startRot+(endRot-startRot)*ease;
+    onUpdate(rot);
 
-  function animate(now) {
-    const progress = Math.min((now - startTime) / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 4);
-    const rotation = startRotation + (endRotation - startRotation) * ease;
-
-    callback(rotation, progress);
-
-    if (progress < 1) {
-      requestAnimationFrame(animate);
+    if(p<1){
+      requestAnimationFrame(frame);
+    }else{
+      onDone(rot);
     }
   }
 
-  requestAnimationFrame(animate);
+  requestAnimationFrame(frame);
 }
 
-function spin() {
-  if (spinning) return;
+function spin(){
+  if(spinning) return;
 
-  const players = getPlayers();
-  const shots = getShots();
-  const result = document.getElementById("result");
-  const button = document.getElementById("spinButton");
+  spinning=true;
+  document.getElementById("spinBtn").disabled=true;
+  document.getElementById("result").innerHTML="🎰 De raderen draaien...";
 
-  if (players.length < 2) {
-    result.innerHTML = "Minimaal 2 spelers invullen.";
+  const shots=getShots();
+  const playerWin=Math.floor(Math.random()*players.length);
+  const shotWin=Math.floor(Math.random()*shots.length);
+
+  let done1=false;
+  let done2=false;
+
+  animateWheel(playerRot,playerWin,players.length,3600,
+    rot=>{playerRot=rot;drawAll();},
+    rot=>{playerRot=rot;done1=true;finish();}
+  );
+
+  setTimeout(()=>{
+    animateWheel(shotRot,shotWin,shots.length,4100,
+      rot=>{shotRot=rot;drawAll();},
+      rot=>{shotRot=rot;done2=true;finish();}
+    );
+  },400);
+
+  function finish(){
+    if(!done1||!done2) return;
+
+    spinning=false;
+    document.getElementById("spinBtn").disabled=false;
+    document.getElementById("result").innerHTML=
+      `🥃 ${shots[shotWin].toUpperCase()}!<br>💸 ${players[playerWin].toUpperCase()} BETAALT`;
+  }
+}
+
+function saveShots(){
+  const shots=document.getElementById("shotsInput").value
+    .split(",")
+    .map(x=>x.trim())
+    .filter(Boolean);
+
+  if(!shots.length){
+    document.getElementById("adminResult").innerHTML="Vul minimaal 1 shotje in.";
     return;
   }
 
-  spinning = true;
-  button.disabled = true;
-  result.innerHTML = "🎰 De raderen draaien...";
-
-  const playerWinner = Math.floor(Math.random() * players.length);
-  const shotWinner = Math.floor(Math.random() * shots.length);
-
-  let pDone = false;
-  let sDone = false;
-
-  spinOne(playerCanvas, players, playerRotation, playerWinner, 3800, (rot, progress) => {
-    playerRotation = rot;
-    drawAll();
-    if (progress === 1) pDone = true;
-    finishCheck();
-  });
-
-  setTimeout(() => {
-    spinOne(shotCanvas, shots, shotRotation, shotWinner, 4300, (rot, progress) => {
-      shotRotation = rot;
-      drawAll();
-      if (progress === 1) sDone = true;
-      finishCheck();
-    });
-  }, 400);
-
-  function finishCheck() {
-    if (!pDone || !sDone) return;
-
-    spinning = false;
-    button.disabled = false;
-
-    result.innerHTML = `
-      🥃 ${shots[shotWinner].toUpperCase()}!<br>
-      💸 ${players[playerWinner].toUpperCase()} BETAALT DE RONDE
-    `;
-  }
+  localStorage.setItem("shotjes",JSON.stringify(shots));
+  document.getElementById("adminResult").innerHTML="✅ Opgeslagen.";
 }
 
-function saveShots() {
-  const value = document.getElementById("shotsAdmin").value;
-  const shots = value.split(",").map(x => x.trim()).filter(Boolean);
-
-  if (!shots.length) {
-    document.getElementById("adminResult").innerHTML = "Vul minimaal 1 shotje in.";
-    return;
-  }
-
-  localStorage.setItem("shotjes", JSON.stringify(shots));
-  document.getElementById("adminResult").innerHTML = "✅ Shotjes opgeslagen.";
-}
-
-function showAdmin() {
-  document.getElementById("app").classList.add("hidden");
-  document.getElementById("admin").classList.remove("hidden");
-  document.getElementById("shotsAdmin").value = getShots().join(", ");
-}
-
-function showApp() {
-  document.getElementById("admin").classList.add("hidden");
-  document.getElementById("app").classList.remove("hidden");
-  drawAll();
-}
-
-function goToApp() {
-  window.location.href = window.location.pathname;
-}
-
-document.getElementById("players").addEventListener("input", drawAll);
-
-if (window.location.hash === "#admin") {
-  showAdmin();
-} else {
-  showApp();
+if(location.hash==="#admin"){
+  document.getElementById("namesPage").classList.add("hidden");
+  document.getElementById("adminPage").classList.remove("hidden");
+  document.getElementById("shotsInput").value=getShots().join(", ");
 }
 </script>
 
