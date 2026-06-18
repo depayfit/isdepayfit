@@ -115,9 +115,19 @@
     ];
 
     function getShots() {
-      const saved = localStorage.getItem("shotjes");
-      if (!saved) return defaultShots;
-      return JSON.parse(saved);
+  try {
+    const saved = localStorage.getItem("shotjes");
+    if (!saved) return defaultShots;
+
+    const shots = JSON.parse(saved);
+    if (!Array.isArray(shots) || shots.length === 0) {
+      return defaultShots;
+    }
+
+    return shots;
+  } catch (e) {
+    return defaultShots;
+  }
     }
 
     function saveShots() {
