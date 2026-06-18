@@ -11,26 +11,62 @@
       background: #111;
       color: white;
       text-align: center;
-      padding: 24px;
+      padding: 18px;
     }
 
-    h1 { font-size: 36px; margin-bottom: 8px; }
-    .sub { color: #aaa; margin-bottom: 24px; }
+    h1 {
+      font-size: 34px;
+      margin-bottom: 6px;
+    }
 
-    textarea, input {
+    .sub {
+      color: #aaa;
+      margin-bottom: 18px;
+    }
+
+    textarea {
       width: 100%;
       max-width: 380px;
       padding: 14px;
-      margin: 8px 0;
+      margin: 8px 0 14px;
       border-radius: 12px;
       border: none;
       font-size: 18px;
       box-sizing: border-box;
     }
 
+    .wheel-wrap {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 18px auto;
+    }
+
+    canvas {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: #222;
+      box-shadow: 0 0 30px rgba(255, 204, 0, 0.25);
+    }
+
+    .pointer {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-top: 34px solid #ffcc00;
+      z-index: 5;
+      filter: drop-shadow(0 0 8px rgba(0,0,0,.7));
+    }
+
     button {
-      margin-top: 16px;
-      padding: 18px 28px;
+      margin-top: 10px;
+      padding: 18px 30px;
       font-size: 22px;
       font-weight: bold;
       border: none;
@@ -38,6 +74,10 @@
       background: #ffcc00;
       color: #111;
       cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
     }
 
     .secondary {
@@ -48,20 +88,23 @@
     }
 
     .result {
-      margin-top: 32px;
-      font-size: 30px;
+      margin-top: 24px;
+      font-size: 28px;
       font-weight: bold;
-      min-height: 120px;
+      min-height: 95px;
+      line-height: 1.35;
     }
 
     .small {
       font-size: 15px;
       color: #888;
-      margin-top: 24px;
+      margin-top: 22px;
       line-height: 1.5;
     }
 
-    .hidden { display: none; }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -72,12 +115,15 @@
 
     <textarea id="players" rows="3" placeholder="Voorletters/namen, bv: R, T, M, K"></textarea>
 
-    <br />
+    <div class="wheel-wrap">
+      <div class="pointer"></div>
+      <canvas id="wheel" width="640" height="640"></canvas>
+    </div>
 
-    <button onclick="spin()">DRAAIEN</button>
+    <button id="spinButton" onclick="spin()">DRAAIEN</button>
 
     <div class="result" id="result">
-      Vul de spelers in.
+      Vul spelers in en draai het rad.
     </div>
 
     <div class="small">
@@ -114,20 +160,168 @@
       "Dropshot"
     ];
 
-    function getShots() {
-  try {
-    const saved = localStorage.getItem("shotjes");
-    if (!saved) return defaultShots;
+    const colors = [
+      "#ffcc00",
+      "#ff4d4d",
+      "#4dd2ff",
+      "#7dff4d",
+      "#c44dff",
+      "#ff8c1a",
+      "#ffffff",
+      "#00ffcc"
+    ];
 
-    const shots = JSON.parse(saved);
-    if (!Array.isArray(shots) || shots.length === 0) {
-      return defaultShots;
+    const canvas = document.getElementById("wheel");
+    const ctx = canvas.getContext("2d");
+    const size = canvas.width;
+    const center = size / 2;
+
+    let currentRotation = 0;
+    let spinning = false;
+    let wheelItems = [];
+
+    function getShots() {
+      try {
+        const saved = localStorage.getItem("shotjes");
+        if (!saved) return defaultShots;
+
+        const shots = JSON.parse(saved);
+        if (!Array.isArray(shots) || shots.length === 0) {
+          return defaultShots;
+        }
+
+        return shots;
+      } catch (e) {
+        return defaultShots;
+      }
     }
 
-    return shots;
-  } catch (e) {
-    return defaultShots;
-  }
+    function getPlayers() {
+      return document.getElementById("players").value
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function buildWheelItems() {
+      const players = getPlayers();
+
+      if (players.length < 2) {
+        wheelItems = ["R", "M", "T", "K"];
+      } else {
+        wheelItems = players;
+      }
+    }
+
+    function drawWheel(rotation = 0) {
+      buildWheelItems();
+
+      const total = wheelItems.length;
+      const slice = (Math.PI * 2) / total;
+
+      ctx.clearRect(0, 0, size, size);
+      ctx.save();
+      ctx.translate(center, center);
+      ctx.rotate(rotation);
+
+      for (let i = 0; i < total; i++) {
+        const start = i * slice;
+        const end = start + slice;
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, center - 10, start, end);
+        ctx.closePath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fill();
+
+        ctx.strokeStyle = "#111";
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        ctx.save();
+        ctx.rotate(start + slice / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#111";
+        ctx.font = "bold 42px Arial";
+        ctx.fillText(wheelItems[i], center - 55, 14);
+        ctx.restore();
+      }
+
+      ctx.beginPath();
+      ctx.arc(0, 0, 55, 0, Math.PI * 2);
+      ctx.fillStyle = "#111";
+      ctx.fill();
+
+      ctx.fillStyle = "#ffcc00";
+      ctx.font = "bold 34px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("SHOT", 0, 12);
+
+      ctx.restore();
+    }
+
+    function spin() {
+      if (spinning) return;
+
+      const players = getPlayers();
+      const shots = getShots();
+      const result = document.getElementById("result");
+      const button = document.getElementById("spinButton");
+
+      if (players.length < 2) {
+        result.innerHTML = "Minimaal 2 spelers invullen.";
+        return;
+      }
+
+      wheelItems = players;
+      spinning = true;
+      button.disabled = true;
+      result.innerHTML = "🎲 Het rad draait...";
+
+      const total = wheelItems.length;
+      const sliceDeg = 360 / total;
+
+      const winnerIndex = Math.floor(Math.random() * total);
+      const shot = shots[Math.floor(Math.random() * shots.length)];
+
+      const pointerDeg = 270;
+      const winnerCenterDeg = winnerIndex * sliceDeg + sliceDeg / 2;
+      const targetDeg = pointerDeg - winnerCenterDeg;
+
+      const extraSpins = 6 * 360;
+      const randomOffset = (Math.random() - 0.5) * (sliceDeg * 0.45);
+      const finalDeg = extraSpins + targetDeg + randomOffset;
+
+      const startRotation = currentRotation;
+      const endRotation = currentRotation + finalDeg * Math.PI / 180;
+
+      const duration = 3600;
+      const startTime = performance.now();
+
+      function animate(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        const easeOut = 1 - Math.pow(1 - progress, 4);
+        currentRotation = startRotation + (endRotation - startRotation) * easeOut;
+
+        drawWheel(currentRotation);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          spinning = false;
+          button.disabled = false;
+
+          result.innerHTML = `
+            🥃 ${shot}<br>
+            💸 ${wheelItems[winnerIndex]} betaalt
+          `;
+        }
+      }
+
+      requestAnimationFrame(animate);
     }
 
     function saveShots() {
@@ -147,37 +341,6 @@
       document.getElementById("adminResult").innerHTML = "✅ Shotjes opgeslagen.";
     }
 
-    function pickRandom(list) {
-      return list[Math.floor(Math.random() * list.length)];
-    }
-
-    function spin() {
-      const players = document.getElementById("players").value
-        .split(",")
-        .map(item => item.trim())
-        .filter(Boolean);
-
-      const shots = getShots();
-      const result = document.getElementById("result");
-
-      if (players.length < 2) {
-        result.innerHTML = "Minimaal 2 spelers invullen.";
-        return;
-      }
-
-      result.innerHTML = "🎲 Het rad draait...";
-
-      setTimeout(() => {
-        const player = pickRandom(players);
-        const shot = pickRandom(shots);
-
-        result.innerHTML = `
-          🥃 ${shot}<br><br>
-          💸 ${player} betaalt
-        `;
-      }, 1200);
-    }
-
     function showAdmin() {
       document.getElementById("app").classList.add("hidden");
       document.getElementById("admin").classList.remove("hidden");
@@ -187,11 +350,16 @@
     function showApp() {
       document.getElementById("admin").classList.add("hidden");
       document.getElementById("app").classList.remove("hidden");
+      drawWheel();
     }
 
     function goToApp() {
       window.location.href = window.location.pathname;
     }
+
+    document.getElementById("players").addEventListener("input", () => {
+      if (!spinning) drawWheel(currentRotation);
+    });
 
     if (window.location.hash === "#admin") {
       showAdmin();
