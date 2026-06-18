@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shot Roulette</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 24px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      color: #aaa;
+      margin-bottom: 24px;
+    }
+
+    textarea, input {
+      width: 100%;
+      max-width: 360px;
+      padding: 14px;
+      margin: 8px 0;
+      border-radius: 12px;
+      border: none;
+      font-size: 18px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 18px 28px;
+      font-size: 22px;
+      font-weight: bold;
+      border: none;
+      border-radius: 999px;
+      background: #ffcc00;
+      color: #111;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 32px;
+      font-size: 30px;
+      font-weight: bold;
+      min-height: 120px;
+    }
+
+    .small {
+      font-size: 16px;
+      color: #888;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🥃 Shot Roulette</h1>
+  <div class="sub">Wie betaalt? En wat drinken we?</div>
+
+  <textarea id="players" rows="3" placeholder="Voorletters/namen, bv: R, T, M, K"></textarea>
+  <textarea id="shots" rows="4" placeholder="Shotjes, bv: Tequila, Flügel, Jäger, Sambuca"></textarea>
+
+  <br />
+
+  <button onclick="spin()">DRAAIEN</button>
+
+  <div class="result" id="result">
+    Vul namen en shotjes in.
+  </div>
+
+  <div class="small">
+    Geen discussie. Het rad heeft gesproken.
+  </div>
+
+  <script>
+    function pickRandom(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function spin() {
+      const players = document.getElementById("players").value
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+
+      const shots = document.getElementById("shots").value
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+
+      const result = document.getElementById("result");
+
+      if (players.length < 2 || shots.length < 1) {
+        result.innerHTML = "Minimaal 2 spelers en 1 shotje invullen.";
+        return;
+      }
+
+      result.innerHTML = "🎲 Het rad draait...";
+
+      setTimeout(() => {
+        const player = pickRandom(players);
+        const shot = pickRandom(shots);
+
+        result.innerHTML = `
+          🥃 ${shot}<br><br>
+          💸 ${player} betaalt
+        `;
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
